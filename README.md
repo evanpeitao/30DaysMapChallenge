@@ -38,3 +38,18 @@ model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
 model.fit(X_train, y_train)
 # Make predictions on the test set
 y_pred = model.predict(X_test)
+
+
+# Import SHAP library
+import shap
+# Create SHAP TreeExplainer
+explainer1 = shap.TreeExplainer(model)
+shap_values1 = explainer1.shap_values(X_test)
+# Plot SHAP values
+shap.summary_plot(shap_values1, X_test, feature_names=df.feature_names)
+
+# Create SHAP GradientExplainer
+explainer2 = shap.GradientExplainer(model, X_train)
+shap_values2 = explainer2.shap_values(X_test)
+# Plot SHAP values
+shap.summary_plot(shap_values1, X_test, feature_names=df.feature_names)
